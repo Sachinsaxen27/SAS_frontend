@@ -1,79 +1,224 @@
-import React, { useContext } from 'react'
-import './Compne.css'
-import leftarr from './image/left.png'
-import rightarr from './image/right.png'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import AttendancenSApi from '../ContextAPi/AttendanceSApi'
 import Alert from './Alerts.js'
-const Navbar = (props) => {
-    const context = useContext(AttendancenSApi)
-    const { ModeChange, bgcolor, images, showAlert, butn, darkimg,Navimage } = context
-    let location = useLocation()
-    let history = useNavigate()
-    const handledown = () => {
-        var content = document.getElementById('dropdowncontent')
-        if (content.style.display === 'none') {
-            content.style.display = 'block';
-        }
-        // else {
-        //     content.style.display = 'none';
-        // }
-        setTimeout(() => {
-            content.style.display = 'none';
-        },3000);
-    }
-    const handlelogout = () => {
-        localStorage.clear();
-        document.getElementById('dropdowncontent').style.display = 'none';
-        showAlert('Logout Successfully', 'success')
-        history('/')
-    }
-    const handleBack = () => {
-        if (location.pathname === '/admindata' || location.pathname === '/studentdata') {
 
-        }
-        else {
-            history(-1)
-        }
-    }
-    const handleforword = () => {
-        history(+1)
+const Navbar = () => {
+  const context = useContext(AttendancenSApi)
+  const { ModeChange, bgcolor, images, showAlert, darkimg, Navimage } = context
 
+  const location = useLocation()
+  const navigate = useNavigate()
+  const isDark = bgcolor === 'dark'
+
+  const [menuOpen, setMenuOpen] = useState(false) // mobile links
+  const [userOpen, setUserOpen] = useState(false) // profile dropdown
+  const userRef = useRef(null)
+
+  const loggedIn = !!localStorage.getItem('token')
+  const onHome = location.pathname === '/'
+  const atRootPage =
+    location.pathname === '/admindata' || location.pathname === '/studentdata'
+
+  // Close dropdown when clicking outside or when the route changes
+  useEffect(() => {
+    const onDown = (e) => {
+      if (userRef.current && !userRef.current.contains(e.target)) {
+        setUserOpen(false)
+      }
     }
-    return (
-        <>
-            <nav className={`navbar navbar-expand-lg navbar-${bgcolor} bg-${bgcolor}`}>
-                <div className="container-fluid">
-                    <img src={Navimage} alt="NavImage" style={{height:"50px "}} />
-                    <Link className="navbar-brand">Attendance</Link>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [])
+
+  useEffect(() => {
+    setUserOpen(false)
+    setMenuOpen(false)
+  }, [location.pathname])
+
+  const handleLogout = () => {
+    localStorage.clear()
+    setUserOpen(false)
+    showAlert('Logout Successfully', 'success')
+    navigate('/')
+  }
+
+  const handleBack = () => {
+    if (!atRootPage) navigate(-1)
+  }
+
+  // ---- theme classes (written out in full so Tailwind can see them) ----
+  const navBg = isDark
+    ? 'bg-slate-900/90 border-slate-700 text-slate-100'
+    : 'bg-white/90 border-slate-200 text-slate-800'
+  const linkCls = isDark
+    ? 'text-slate-300 hover:bg-slate-800 hover:text-white'
+    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+  const iconBtn = isDark
+    ? 'hover:bg-slate-800 focus-visible:ring-slate-500'
+    : 'hover:bg-slate-100 focus-visible:ring-slate-400'
+  const barBg = isDark ? 'bg-slate-900 border-slate-800' : 'bg-slate-50 border-slate-200'
+  const arrowBtn = isDark
+    ? 'bg-slate-800 text-slate-100 hover:bg-slate-700 disabled:hover:bg-slate-800'
+    : 'bg-white text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-slate-100 disabled:hover:bg-white'
+  const menuCls = isDark
+    ? 'bg-slate-800 border-slate-700 text-slate-100'
+    : 'bg-white border-slate-200 text-slate-800'
+
+  return (
+    <>
+      <nav
+        className={`sticky top-0 z-40 border-b backdrop-blur ${navBg}`}
+      >
+        <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-2">
+          {/* Brand */}
+          <Link to="/" className="flex items-center gap-3">
+            {Navimage && (
+              <img src={Navimage} alt="" className="h-10 w-auto object-contain" />
+            )}
+            <span className="text-lg font-semibold tracking-tight">Attendance</span>
+          </Link>
+
+          {/* Desktop links */}
+          {onHome && (
+            <ul className="ml-6 hidden items-center gap-1 md:flex">
+              <li>
+                <Link
+                  to="/"
+                  aria-current="page"
+                  className={`rounded-lg px-3 py-2 text-sm font-medium ${
+                    isDark ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-900'
+                  }`}
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/more"
+                  className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${linkCls}`}
+                >
+                  Future Scope Object
+                </Link>
+              </li>
+            </ul>
+          )}
+
+          {/* Right side */}
+          <div className="ml-auto flex items-center gap-1">
+            {/* Dark / light toggle */}
+            <button
+              type="button"
+              onClick={ModeChange}
+              aria-label="Toggle dark mode"
+              className={`flex h-10 w-10 items-center justify-center rounded-full outline-none transition-colors focus-visible:ring-2 ${iconBtn}`}
+            >
+              <i className={darkimg?.text} style={{ color: darkimg?.type }} />
+            </button>
+
+            {/* Profile dropdown */}
+            {loggedIn && (
+              <div className="relative" ref={userRef}>
+                <button
+                  type="button"
+                  onClick={() => setUserOpen((o) => !o)}
+                  aria-haspopup="menu"
+                  aria-expanded={userOpen}
+                  aria-label="Account menu"
+                  className={`flex h-10 w-10 items-center justify-center rounded-full outline-none transition-colors focus-visible:ring-2 ${iconBtn}`}
+                >
+                  <img src={images} alt="" className="h-5 w-5 object-contain" />
+                </button>
+
+                {userOpen && (
+                  <div
+                    role="menu"
+                    className={`absolute right-0 mt-2 w-40 overflow-hidden rounded-xl border py-1 shadow-lg ${menuCls}`}
+                  >
+                    <button
+                      type="button"
+                      role="menuitem"
+                      onClick={handleLogout}
+                      className={`block w-full px-4 py-2 text-left text-sm transition-colors ${
+                        isDark ? 'hover:bg-slate-700' : 'hover:bg-slate-100'
+                      }`}
+                    >
+                      Logout
                     </button>
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        {location.pathname === '/' && <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li className="nav-item">
-                                <Link className="nav-link active" aria-current="page" to="/">Home</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/more">Future Scope Object</Link>
-                            </li>
-                        </ul>}
-                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 
-                    {(localStorage.getItem('token')) && <img src={images} alt="" style={{ height: "20px", width: "22px", position: "absolute", right: "150px", cursor: "pointer" }} onClick={handledown} />}
-                    <div id="dropdowncontent" style={{ display: 'none', backgroundColor: 'white', position: "absolute", left: " 75rem" ,width:"50px"}} role='button' onClick={handlelogout}><li>Logout</li></div>
-                </div>
-                <div className='form-check form-switch mx-2' style={{ position: 'absolute', left: '68rem' }}>
-                    <button className={`bg-${bgcolor}`} onClick={ModeChange} style={{ border: 'none' }}>< i className={darkimg.text} style={{ color: darkimg.type }} /></button>
-                </div>
-            </nav>
-            <div className="d-flex mb-3">
-                <button disabled={location.pathname === '/'} display={null} onClick={handleBack} className={`p-2 bg-${butn}`} style={{ border: 'none', backgroundColor: 'grey' }}><img src={leftarr} alt='Back' style={{ height: '2rem' }} /></button>
-                <Alert />
-                <button onClick={handleforword} className={`ms-auto p-2 bg-${butn}`} style={{ border: 'none', backgroundColor: 'grey' }}><img src={rightarr} alt='Back' style={{ height: '2rem' }} /></button>
-            </div>
-        </>
-    )
+            {/* Mobile menu button (only when there are links to show) */}
+            {onHome && (
+              <button
+                type="button"
+                onClick={() => setMenuOpen((o) => !o)}
+                aria-label="Toggle navigation"
+                aria-expanded={menuOpen}
+                className={`flex h-10 w-10 items-center justify-center rounded-full outline-none transition-colors focus-visible:ring-2 md:hidden ${iconBtn}`}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  {menuOpen ? (
+                    <path d="M6 6l12 12M18 6L6 18" />
+                  ) : (
+                    <path d="M4 7h16M4 12h16M4 17h16" />
+                  )}
+                </svg>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Mobile links */}
+        {onHome && menuOpen && (
+          <ul className="space-y-1 px-4 pb-3 md:hidden">
+            <li>
+              <Link to="/" className={`block rounded-lg px-3 py-2 text-sm font-medium ${linkCls}`}>
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link to="/more" className={`block rounded-lg px-3 py-2 text-sm font-medium ${linkCls}`}>
+                Future Scope Object
+              </Link>
+            </li>
+          </ul>
+        )}
+      </nav>
+
+      {/* Back / Alert / Forward bar */}
+      <div className={`flex items-center gap-3 border-b px-4 py-2 ${barBg}`}>
+        <button
+          type="button"
+          onClick={handleBack}
+          disabled={onHome || atRootPage}
+          aria-label="Go back"
+          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${arrowBtn}`}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+
+        <div className="min-w-0 flex-1">
+          <Alert />
+        </div>
+
+        <button
+          type="button"
+          onClick={() => navigate(1)}
+          aria-label="Go forward"
+          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-colors ${arrowBtn}`}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+      </div>
+    </>
+  )
 }
 
 export default Navbar

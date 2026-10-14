@@ -13,8 +13,8 @@ const Tablelist = (props) => {
             <td>{students.email}</td>
             <td>{students.rollnumber}</td>
             <td>{students.currentedu}</td>
-            <td>{students.currentyear}</td>
             <td>{students.stdbranch}</td>
+            <td>{students.currentyear}</td>
             <td><i className="fa-solid fa-pen-to-square" id='imagess'style={{cursor:"pointer"}} onClick={()=>{handleUpdate(students)}}></i></td>
             <td><div><i className="fa-solid fa-trash"  id='imagess'style={{cursor:"pointer"}} onClick={()=>{return handeldelete(students._id)}} ></i></div></td>
             <td><div><i className="fa-solid fa-qrcode" style={{cursor:"pointer"}} onClick={()=>{HandleQr(students.rollnumber)}}></i></div></td>

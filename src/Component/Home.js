@@ -1,4 +1,4 @@
-import React,{useContext, useEffect} from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import graduate from './image/graduate.png'
 import admin from './image/management.png'
@@ -7,64 +7,118 @@ import dgraduate from './image/dgraduate.png'
 import dcamera from './image/dcamera.png'
 import wcamera from './image/wcamera.png'
 import AttendancenSApi from '../ContextAPi/AttendanceSApi'
-const Home = (props) => {
-    const context =useContext(AttendancenSApi)
-    const{bgcolor,fgcolor,dbgcolor}=context
-  // console.log('dsds',Date().toLocaleDateString())
-    let history=useNavigate()
-    const handleclickadmin=()=>{
-        history('./admin')
 
+const Home = () => {
+  const context = useContext(AttendancenSApi)
+  const { bgcolor } = context
+  const navigate = useNavigate()
+  const isDark = bgcolor === 'dark'
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      navigate('/admindata')
+    } else if (localStorage.getItem('student')) {
+      // student session exists; add redirect here if needed
     }
-    const handleclickstudent=()=>{
-        history('/student')
-    }
-    const handleclickcamera=()=>{
-    // window.open('/camera')
-    history('/camera')
-    }
-    
-    useEffect(()=>{
-        // console.log('ues')
-        if(localStorage.getItem('token')){
-            history('/admindata')
-        }else if(localStorage.getItem('student')){
-            let student = JSON.parse(localStorage.getItem('student'))
-            // console.log(student);
-        }
-           // eslint-disable-next-line
-      },[])
-    //   console.log(dbgcolor)
+    // eslint-disable-next-line
+  }, [])
+
+  // Tailwind can't see class names built with template strings,
+  // so every class is written out in full here.
+  const cards = [
+    {
+      title: 'My Profile',
+      text: 'View or edit your profile details.',
+      icon: isDark ? whitemang : admin,
+      path: '/admin',
+      border: 'border-t-blue-500',
+      ring: 'bg-blue-500/15',
+      focus: 'focus-visible:ring-blue-500',
+    },
+    {
+      title: 'Student Login',
+      text: 'Sign in or create a new student account.',
+      icon: isDark ? dgraduate : graduate,
+      path: '/student',
+      border: 'border-t-emerald-500',
+      ring: 'bg-emerald-500/15',
+      focus: 'focus-visible:ring-emerald-500',
+    },
+    {
+      title: 'Attendance',
+      text: 'Check attendance for all students.',
+      icon: isDark ? dcamera : wcamera,
+      path: '/camera',
+      border: 'border-t-amber-500',
+      ring: 'bg-amber-500/15',
+      focus: 'focus-visible:ring-amber-500',
+    },
+  ]
+
+  const pageText = isDark ? 'text-slate-100' : 'text-slate-800'
+  const subText = isDark ? 'text-slate-400' : 'text-slate-500'
+  const pageBg = isDark
+    ? 'bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950'
+    : 'bg-gradient-to-br from-slate-50 via-white to-blue-50'
+  const cardBg = isDark
+    ? 'bg-slate-800/60 ring-1 ring-white/10 backdrop-blur'
+    : 'bg-white ring-1 ring-slate-200'
+  const navBtn = isDark
+    ? 'border-slate-600 text-slate-200 hover:bg-slate-700'
+    : 'border-slate-300 text-slate-700 hover:bg-slate-100'
+
   return (
-    <>
-    <div  className="row my-5">
-       
-            <div className={`card mx-5 bg-${dbgcolor} `} style={{height:'14rem',cursor:'pointer',position:'absolute',top:'11rem',left:'6.5rem',width: "16rem"}} onClick={handleclickadmin}>
-                {bgcolor==='dark'?<img src={whitemang} alt="user" style={{position: "absolute",height: "5rem",width: "6rem",left: "85px",top: "33px"}} />:<img src={admin} alt="user" style={{position: "absolute",height: "5rem",width: "6rem",left: "85px",top: "33px"}} />}
-                    <div className="card-body" >
-                        <h5 className={`card-title text-${fgcolor}`} style={{top: "115px",position: "absolute",left:"80px"}}>My Profile</h5>
-                        <p className={`card-text text-${fgcolor}`} style={{top: "140px",position: "absolute",left:"19px",fontSize:'14px'}}>Click here to view/edit your Profile.</p>
-                    </div>
-                   
+    <div className={`min-h-screen ${pageBg}`}>
+    <div className="mx-auto max-w-6xl px-4 py-8">
+      {/* Back / Forward */}
+      {/* <div className="mb-8 flex gap-2">
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          aria-label="Go back"
+          className={`rounded-full border px-4 py-1.5 text-sm transition-colors ${navBtn}`}
+        >
+          &#8592; Back
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate(1)}
+          aria-label="Go forward"
+          className={`rounded-full border px-4 py-1.5 text-sm transition-colors ${navBtn}`}
+        >
+          Forward &#8594;
+        </button>
+      </div> */}
+
+      {/* Cards */}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {cards.map((c) => (
+          <div
+            key={c.title}
+            role="button"
+            tabIndex={0}
+            onClick={() => navigate(c.path)}
+            onKeyDown={(e) =>
+              (e.key === 'Enter' || e.key === ' ') && navigate(c.path)
+            }
+            className={`flex min-h-[15rem] cursor-pointer flex-col items-center justify-center rounded-2xl border-t-4 p-6 text-center shadow-md outline-none transition duration-200 hover:-translate-y-1.5 hover:shadow-xl focus-visible:ring-2 motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${cardBg} ${c.border} ${c.focus}`}
+          >
+            <div
+              className={`flex h-22 w-22 items-center justify-center rounded-full ${c.ring}`}
+              style={{ width: '5.5rem', height: '5.5rem' }}
+            >
+              <img src={c.icon} alt="" className="h-13 w-13 object-contain" style={{ width: '3.2rem', height: '3.2rem' }} />
             </div>
-            <div className={`card mx-5 bg-${dbgcolor}`}   style={{height:'14rem',cursor:'pointer',position:'absolute',top:'11rem',left:'31.8rem',width: "16rem"}}  onClick={handleclickstudent}>
-            {bgcolor==='dark'?<img src={dgraduate} alt="user" style={{position: "absolute",height: "75px",width: "80px",left: "94px",top: "33px"}} />:<img src={graduate} alt="user" style={{position: "absolute",height: "75px",width: "80px",left: "94px",top: "33px"}} />}
-                    <div className="card-body" >
-                        <h5 className={`card-title text-${fgcolor}`}  style={{top: "115px",position: "absolute",left:"70px"}}>Student Login</h5>
-                        <p className={`card-text text-${fgcolor}`} style={{top: "140px",position: "absolute",left:"52px",fontSize:'14px'}}>Create New User Account</p>
-                    </div>
-            </div>
-            <div className={`card mx-5 bg-${dbgcolor} `}  style={{height:'14rem',cursor:'pointer',position:'absolute',top:'11rem',left:'57rem',width: "16rem" }}  onClick={handleclickcamera}>
-                {bgcolor==='dark'?<img src={dcamera}  alt="checklist" style={{position: "absolute",height: "93px",width: "100px",left: "72px",top: "25px"}} />:<img src={wcamera}  alt="checklist" style={{position: "absolute",height: "70px",width: "76px",left: "84px",top: "40px"}}/>}
-                    <div className="card-body">
-                        <h5 className={`card-title text-${fgcolor}`} style={{top: "115px",position: "absolute",left:"75px"}}>Attendance</h5>
-                        <p className={`card-text text-${fgcolor}`} style={{top: "140px",position: "absolute",left:"32px",fontSize:'14px'}}>To Check all Student Attendance</p>
-                    </div>
-            </div>
-        </div>
-        {/* bg-${dbgcolor} */}
-    </>
+            <h5 className={`mb-1 mt-4 text-lg font-semibold ${pageText}`}>
+              {c.title}
+            </h5>
+            <p className={`text-sm ${subText}`}>{c.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+    </div>
   )
 }
-// absolute
+
 export default Home

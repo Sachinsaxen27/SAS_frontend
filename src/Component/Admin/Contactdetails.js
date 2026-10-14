@@ -1,47 +1,106 @@
 import React, { useContext } from 'react'
-import userpic from "../image/user.png"
 import emailpic from '../image/email.png'
 import mobileno from '../image/phone.png'
 import dmobile from '../image/dphone.png'
 import demail from '../image/demail.png'
-import duserpic from '../image/dduser.png'
 import AttendancenSApi from '../../ContextAPi/AttendanceSApi'
-const Contactdetails = (props) => {
-    const context = useContext(AttendancenSApi)
-    const { fgcolor, dbgcolor } = context
-    const { info } = props
-    return (
-        <>
-            <div><h5 className={`text-${fgcolor}`} style={{ position: "absolute", left: "31rem" }}>Contact Details</h5><br />
-                <p className={`text-${fgcolor} fst-italic`} style={{ fontSize: "14px", marginBottom: " 0px", position: "absolute", left: "31rem", top: "14rem" }}>Manage your personal information,including phone number and email address where you can be contacted.</p>
-            </div><br />
-            <div className="row">
-                <div className={`card col my-3 mx-1 bg-${dbgcolor}`} style={{ width: "18rem", height: '7rem' }}>
-                    <div className="card-body">
-                        {fgcolor === 'white' ? <img src={dmobile} alt="" style={{ height: '23px', position: "absolute", left: "20rem" }} /> : <img src={mobileno} alt="" style={{ height: '23px', position: "absolute", left: "20rem" }} />}
-                        <h4 className={`card-title text-${fgcolor}`} style={{ position: "absolute" }}>Contact No</h4><br /><br />
-                        <p className={`card-text  text-${fgcolor}`}>{info.mobile}</p>
-                    </div>
-                </div>
-                <div className={`card col my-3 mx-1 bg-${dbgcolor}`} style={{ width: "18rem" }}>
-                    <div className="card-body">
-                        {fgcolor === 'white' ? <img src={demail} alt="" style={{ height: '23px', position: "absolute", left: "20rem" }} /> : <img src={emailpic} alt="" style={{ height: '23px', position: "absolute", left: "20rem" }} />}
-                        <h4 className={`card-title text-${fgcolor}`} style={{ position: "absolute" }}>Email Address</h4><br /><br />
-                        <p className={`card-text  text-${fgcolor}`}>Lorem, ipsum..</p>
-                    </div>
-                </div>
+
+const Contactdetails = ({ info = {} }) => {
+  const context = useContext(AttendancenSApi)
+  const { bgcolor } = context
+  const isDark = bgcolor === 'dark'
+
+  const heading = isDark ? 'text-white' : 'text-slate-900'
+  const muted = isDark ? 'text-slate-400' : 'text-slate-500'
+  const tile = isDark
+    ? 'bg-slate-950/40 ring-1 ring-white/10'
+    : 'bg-slate-50 ring-1 ring-slate-200'
+
+  const fields = [
+    {
+      label: 'Contact number',
+      value: info.mobile || '—',
+      icon: (
+        <img
+          src={isDark ? dmobile : mobileno}
+          alt=""
+          className="h-6 w-6 object-contain"
+        />
+      ),
+      badge: isDark ? 'bg-emerald-500/15' : 'bg-emerald-100',
+    },
+    {
+      label: 'Email address',
+      value: info.email || '—',
+      icon: (
+        <img
+          src={isDark ? demail : emailpic}
+          alt=""
+          className="h-6 w-6 object-contain"
+        />
+      ),
+      badge: isDark ? 'bg-sky-500/15' : 'bg-sky-100',
+      breakAll: true,
+    },
+    {
+      label: 'Address',
+      value: info.address || '—',
+      // No address image in the project, so a small inline icon is used
+      icon: (
+        <svg
+          className={`h-6 w-6 ${isDark ? 'text-amber-300' : 'text-amber-600'}`}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M12 21s-7-6-7-11a7 7 0 0114 0c0 5-7 11-7 11z" />
+          <circle cx="12" cy="10" r="2.5" />
+        </svg>
+      ),
+      badge: isDark ? 'bg-amber-500/15' : 'bg-amber-100',
+      wide: true,
+    },
+  ]
+
+  return (
+    <div>
+      <p className={`max-w-xl text-sm ${muted}`}>
+        Manage the phone number, email address and address where you can be
+        contacted.
+      </p>
+
+      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        {fields.map((f) => (
+          <div
+            key={f.label}
+            className={`flex items-center gap-4 rounded-2xl p-5 ${tile} ${
+              f.wide ? 'sm:col-span-2' : ''
+            }`}
+          >
+            <div
+              className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${f.badge}`}
+            >
+              {f.icon}
             </div>
-            <div className="row">
-                <div className={`card col my-3 mx-1 bg-${dbgcolor}`} style={{ width: "18rem", height: '7rem' }}>
-                    <div className="card-body">
-                        {fgcolor==='white'?<img src={duserpic} alt="" style={{ height: '23px', position: "absolute", left: "43.8rem" }} />:<img src={userpic} alt="" style={{ height: '23px', position: "absolute", left: "43.8rem" }} />}
-                        <h4 className={`card-title text-${fgcolor}`} style={{ position: "absolute" }}>Gender</h4><br /><br />
-                        <p className={`card-text  text-${fgcolor}`}>Lorem, ipsum..</p>
-                    </div>
-                </div>
+            <div className="min-w-0">
+              <p className={`text-sm ${muted}`}>{f.label}</p>
+              <p
+                className={`mt-0.5 text-lg font-semibold ${heading} ${
+                  f.breakAll ? 'break-all' : 'break-words'
+                }`}
+              >
+                {f.value}
+              </p>
             </div>
-        </>
-    )
+          </div>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 export default Contactdetails
