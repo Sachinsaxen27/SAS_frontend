@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import CheckTable from './CheckTable'
 import AttendancenSApi from '../../ContextAPi/AttendanceSApi'
-
-const API = 'http://localhost:5000/api'
+import { apiUrl } from '../../config'
+const API = `${apiUrl}api`
 const COLUMNS = ['SN#', 'Name', 'Roll No.', 'Course', 'Branch', 'Year', 'Date']
 
 const SearchIcon = () => (

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AttendancenSApi from '../../ContextAPi/AttendanceSApi'
-
+import { apiUrl } from '../../config'
 // Small line icons (24x24 grid)
 const icons = {
   user: (
@@ -179,7 +179,7 @@ const Studentsign = () => {
     }
     setLoading(true)
     try {
-      const response = await fetch('http://localhost:5000/api/student/studentSingup', {
+      const response = await fetch(`${apiUrl}api/student/studentSingup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...credintial, image }),

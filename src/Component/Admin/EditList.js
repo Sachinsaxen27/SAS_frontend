@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
-
-const API = 'http://localhost:5000/api'
+import {apiUrl} from '../../config'
+const API = `${apiUrl}api`
 const MAX_PHOTO_MB = 5
 
 // `name` must match the field names on your student documents

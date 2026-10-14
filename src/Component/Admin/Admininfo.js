@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import Basicdetails from './Basicdetails'
 import Contactdetails from './Contactdetails'
 import AttendancenSApi from '../../ContextAPi/AttendanceSApi'
-
-const API = 'http://localhost:5000/api'
+import { apiUrl } from '../../config'
+const API = `${apiUrl}api`
 const MAX_PHOTO_MB = 5
 const GENDERS = ['Male', 'Female', 'Other']
 

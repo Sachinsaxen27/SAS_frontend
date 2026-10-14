@@ -4,7 +4,7 @@ import Familydetails from './FamilyDetail'
 import Contactdetails from './StudentContact'
 import Studenedu from './Studenedu'
 import AttendancenSApi from '../../ContextAPi/AttendanceSApi'
-
+import { apiUrl } from '../../config'
 const tabIcons = {
   basicDetails: (
     <>
@@ -64,7 +64,7 @@ const StudentInfo = () => {
 
   const getinfo = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/student/getstudent', {
+      const response = await fetch(`${apiUrl}api/student/getstudent`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

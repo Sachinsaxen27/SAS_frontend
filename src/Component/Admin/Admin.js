@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import AttendancenSApi from '../../ContextAPi/AttendanceSApi'
 import adminlogin from '../image/adminlogin.jpg'
 
+import { apiUrl } from '../../config'
+
 const Admin = () => {
   const context = useContext(AttendancenSApi)
   const { showAlert, bgcolor } = context
@@ -21,7 +23,8 @@ const Admin = () => {
     e.preventDefault()
     setLoading(true)
     try {
-      const response = await fetch('http://localhost:5000/api/user/adminlogin', {
+      console.log('API URL:', apiUrl) // Log the API URL to check if it's correct
+      const response = await fetch(`${apiUrl}api/user/adminlogin`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

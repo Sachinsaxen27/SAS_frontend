@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import AttendancenSApi from '../../ContextAPi/AttendanceSApi'
-
+import { apiUrl } from '../../config'
 // Small line icons (24x24 grid)
 const icons = {
   user: (
@@ -101,7 +101,7 @@ const AdminSignup = () => {
     e.preventDefault()
     setLoading(true)
     try {
-      const response = await fetch('http://localhost:5000/api/user/adminSingup', {
+      const response = await fetch(`${apiUrl}api/user/adminSingup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

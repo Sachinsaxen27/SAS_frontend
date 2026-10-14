@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import AttendanceTable from './AttendanceTable'
 import Filters from './Filters'
 import AttendancenSApi from '../../ContextAPi/AttendanceSApi'
-
-const API = 'http://localhost:5000/api/attendance'
+import {apiUrl} from '../../config'
+const API = `${apiUrl}api/attendance`
 const COLUMNS = ['SN#', 'Name', 'Roll No.', 'Course', 'Year', 'Branch', 'Date']
 
 const Attendancelist = () => {

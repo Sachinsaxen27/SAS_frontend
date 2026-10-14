@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import jsQR from 'jsqr'
 import { useNavigate } from 'react-router-dom'
 import AttendancenSApi from '../../ContextAPi/AttendanceSApi'
-
-const API = 'http://localhost:5000/api'
+import { apiUrl } from '../../config'
+const API = `${apiUrl}api`
 
 const Svg = ({ children, className = 'h-5 w-5' }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

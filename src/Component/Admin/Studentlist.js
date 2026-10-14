@@ -3,7 +3,8 @@ import QRCode from 'qrcode.react'
 import Tablelist from './Tablelist'
 import AttendancenSApi from '../../ContextAPi/AttendanceSApi'
 import Editlist from './EditList'
-const API = 'http://localhost:5000/api'
+import {apiUrl} from '../../config'
+const API = `${apiUrl}api`
 const COLUMNS = [
   'SN#', 'Photo', 'Name', 'Email', 'Roll No.', 'Course', 'Branch', 'Year',
   'Update', 'Delete', 'Bar Code', 'Download',

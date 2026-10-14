@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import AttendancenSApi from '../../ContextAPi/AttendanceSApi'
-
-const API = 'http://localhost:5000/api/user'
+import {apiUrl} from '../../config'
+const API = `${apiUrl}api/user`
 
 const Icon = ({ children, className = 'h-4 w-4' }) => (
   <svg
