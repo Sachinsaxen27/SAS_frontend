@@ -1,0 +1,32 @@
+{
+  "files": {
+    "main.css": "/static/css/main.f6594301.css",
+    "main.js": "/static/js/main.7bf71510.js",
+    "static/js/787.05361de2.chunk.js": "/static/js/787.05361de2.chunk.js",
+    "static/media/whitemang.png": "/static/media/whitemang.8bb3defe7992f261f70f.png",
+    "static/media/dduser.png": "/static/media/dduser.0f5b0f88e254adc5dfb7.png",
+    "static/media/dgraduate.png": "/static/media/dgraduate.ac2ceabc7a5f261b530a.png",
+    "static/media/dcamera.png": "/static/media/dcamera.f88d178a73e519ef2cbe.png",
+    "static/media/dchecklist.png": "/static/media/dchecklist.b51710039410317a4d56.png",
+    "static/media/dlist.png": "/static/media/dlist.bd504cca4c3574587a9f.png",
+    "static/media/dadduser.png": "/static/media/dadduser.748eb641086cfd8f5bd6.png",
+    "static/media/adminlogin.jpg": "/static/media/adminlogin.551f08ca8930d71c606d.jpg",
+    "static/media/phishing.webp": "/static/media/phishing.48fd94f9fc4dc8086064.webp",
+    "static/media/duser.png": "/static/media/duser.060fb7e93af6eb7ec843.png",
+    "static/media/management.png": "/static/media/management.e2d27450330ea81845cb.png",
+    "static/media/demail.png": "/static/media/demail.96ee8dcfa166dddf0dce.png",
+    "static/media/graduate.png": "/static/media/graduate.6e603d3d15510c84a2a1.png",
+    "static/media/dphone.png": "/static/media/dphone.3e3d3f3f3e94b843d041.png",
+    "static/media/dgender.png": "/static/media/dgender.36f645af560e4560fbb5.png",
+    "static/media/ddate.png": "/static/media/ddate.967372cc986f372ad35d.png",
+    "index.html": "/index.html",
+    "static/media/adduser.svg": "/static/media/adduser.daf8a2deb4e353dc09cf5068c204745a.svg",
+    "main.f6594301.css.map": "/static/css/main.f6594301.css.map",
+    "main.7bf71510.js.map": "/static/js/main.7bf71510.js.map",
+    "787.05361de2.chunk.js.map": "/static/js/787.05361de2.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f6594301.css",
+    "static/js/main.7bf71510.js"
+  ]
+}

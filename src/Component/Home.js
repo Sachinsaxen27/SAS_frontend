@@ -63,10 +63,10 @@ const Home = () => {
   const cardBg = isDark
     ? 'bg-slate-800/60 ring-1 ring-white/10 backdrop-blur'
     : 'bg-white ring-1 ring-slate-200'
-  const navBtn = isDark
-    ? 'border-slate-600 text-slate-200 hover:bg-slate-700'
-    : 'border-slate-300 text-slate-700 hover:bg-slate-100'
-
+  // const navBtn = isDark
+  //   ? 'border-slate-600 text-slate-200 hover:bg-slate-700'
+  //   : 'border-slate-300 text-slate-700 hover:bg-slate-100'
+  //   consle.log('isDark:', isDark)
   return (
     <div className={`min-h-screen ${pageBg}`}>
     <div className="mx-auto max-w-6xl px-4 py-8">

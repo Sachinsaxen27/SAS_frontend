@@ -141,7 +141,7 @@ const Editlist = ({ student, isDark, onClose, onSaved, showAlert,widthClass = 'm
             className={`group relative -mt-12 mx-auto flex h-24 w-24 items-center justify-center overflow-hidden rounded-full text-3xl font-semibold ring-4 ${avatarRing} ${avatarFallback} ${focus}`}
           >
             {photo ? (
-              <img src={photo} alt="Student photo" className="h-full w-full object-cover" />
+              <img src={photo} alt="Student" className="h-full w-full object-cover" />
             ) : (
               initial
             )}
